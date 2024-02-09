@@ -1,12 +1,13 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useOrder } from '@/store/order'
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp, doc, updateDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
 
-import { CheckIcon, Select } from "native-base";
+import { CheckIcon, ScrollView, Select } from "native-base";
+import { db } from '@/firebase';
 
 
 type Props = {}
@@ -71,7 +72,16 @@ const order = (props: Props) => {
     if(!order) return
     setSelectedState(states.find((s) => (s.name as string ).toLowerCase() === order.status.toLocaleLowerCase()) || states[2]);
   }, [order])
-  
+
+
+
+  const changeState = (state:{color:string,name:string})=>{
+    if(!order) return
+    updateDoc(doc(db,"orders",order.id),{
+      status:state.name
+    })
+  }
+
 
   return (
     (order && states) &&
@@ -86,7 +96,7 @@ const order = (props: Props) => {
           position:"relative",
         }}>
           <TouchableOpacity onPress={()=>setOpenStateChanger(true)}>
-            <Text style={{...styles.state,backgroundColor:selectedState.color+"30",color:selectedState.color,borderColor:selectedState.color}}>{order.status}</Text>
+            <Text style={{...styles.state,backgroundColor:selectedState.color+"30",color:selectedState.color,borderColor:selectedState.color}}>{selectedState.name}</Text>
           </TouchableOpacity>
           {
             openStateChanger &&
@@ -105,7 +115,7 @@ const order = (props: Props) => {
           {
             states.map((s,i)=>{
               return(
-                <TouchableOpacity key={i} onPress={()=>{setSelectedState(s);setOpenStateChanger(false)}}>
+                <TouchableOpacity key={i} onPress={()=>{setSelectedState(s);setOpenStateChanger(false) ; changeState(s)}}>
                   <Text key={i} style={{...styles.state,backgroundColor:s.color+"30",color:s.color,borderColor:s.color,alignSelf:"stretch", paddingVertical:8}}>{s.name}</Text>
                 </TouchableOpacity>
               )
@@ -123,19 +133,32 @@ const order = (props: Props) => {
         <TouchableOpacity style={styles.button}>
           <FontAwesome  name="whatsapp" size={24} color="black" />
           <Text>Confirm Order</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <FontAwesome name="trash-o" size={24} color="black" />
-          <Text>Delete Order</Text>
+          <View style={{marginLeft:"auto"}}>
+          <FontAwesome  name="arrow-right" size={15} color="black" />
+          </View>
         </TouchableOpacity>
 
       </View>
 
       <Text style={{fontSize:24}}>{order.cart.reduce((acc,item)=>acc+item.quantity,0)} Pots</Text>
-      <Text style={{fontSize:18}}>{order?.firstName} {order?.lastName}</Text>
-      <Text style={{fontSize:18}}>{order?.number}</Text>
-      <Text style={{fontSize:18}}>{order?.city}</Text>
-      <Text style={{fontSize:18}}>{order?.address}</Text>
+      <Text style={{fontSize:13}}>{order?.firstName} {order?.lastName}</Text>
+      <Text style={{fontSize:13}}>{order?.number}</Text>
+      <Text style={{fontSize:13}}>{order?.city}</Text>
+      <Text style={{fontSize:13}}>{order?.address}</Text>
+      <FlatList
+        data={order?.cart}
+        style={{marginTop:10}}
+        numColumns={3}
+        renderItem={({item})=>{
+          return(
+            <View style={{flexDirection:"column",alignItems:"center" ,flex:1,gap:8,marginVertical:10}}>
+                    <Image style={{width:70,height:70,transform:[{translateY:25}],zIndex:1}} src={"https://firebasestorage.googleapis.com/v0/b/cactusia-983c2.appspot.com/o/cactuses%2F"+item.cactus+"?alt=media&token=bb288d03-287d-45f0-8b90-f9871f1a7567"} alt='' width={50} height={50}></Image>
+                    <Image style={{width:80,height:100}} src={"https://firebasestorage.googleapis.com/v0/b/cactusia-983c2.appspot.com/o/pots%2F"+item.pot+"?alt=media&token=bb288d03-287d-45f0-8b90-f9871f1a7567"} alt='' width={50} height={50}></Image>
+                    <Text style={{...styles.state,fontSize:18,alignSelf:"center",borderColor:"#3332"}}>{item.quantity}</Text>
+            </View>
+          )
+        }}
+       />
     </View>
   )
 }
