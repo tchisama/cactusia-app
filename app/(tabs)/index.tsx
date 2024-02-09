@@ -6,9 +6,21 @@ import { Text, View } from '@/components/Themed';
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+
+      <Text style={styles.title}>Today's Orders</Text>
+      <Text style={styles.OrdersNumber}>4</Text>
+
+      <View  style={{ display: 'flex', flexDirection: 'row' , justifyContent: 'space-between'}}>
+        <View>
+          <Text style={styles.title}>New Orders</Text>
+          <Text style={styles.OrdersNumber2}>2</Text>
+        </View>
+        <View>
+          <Text style={styles.title}>Confirmed Orders</Text>
+          <Text style={styles.OrdersNumber2}>3</Text>
+        </View>
+      </View>
+
     </View>
   );
 }
@@ -16,11 +28,18 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding:12,
   },
   title: {
     fontSize: 20,
+    fontWeight: 'bold',
+  },
+  OrdersNumber:{
+    fontSize: 60,
+    fontWeight: 'bold',
+  },
+  OrdersNumber2:{
+    fontSize: 40,
     fontWeight: 'bold',
   },
   separator: {
