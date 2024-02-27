@@ -2,8 +2,18 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+
+
+
+
+
 
 export default function TabOneScreen() {
+
+
+  
   return (
     <View style={styles.container}>
 

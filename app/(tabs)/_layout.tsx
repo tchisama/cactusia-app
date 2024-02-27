@@ -7,6 +7,17 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { Ionicons } from '@expo/vector-icons';
+
+
+
+
+
+
+
+
+
+
+
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];

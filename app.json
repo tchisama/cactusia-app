@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pro.tchisama.cactusiaapp"
     },
     "web": {
       "bundler": "metro",
@@ -34,6 +35,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fc0edb48-e68a-42f0-ba7d-116aaa0f1b77"
+      }
     }
   }
 }
