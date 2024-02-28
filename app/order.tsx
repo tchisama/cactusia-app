@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Linking, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useOrder } from '@/store/order'
 import { Timestamp, doc, updateDoc } from 'firebase/firestore';
@@ -130,7 +130,11 @@ const order = (props: Props) => {
 
 
       <View style={{flexDirection:"row",gap:8,marginVertical:10}}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={()=>{
+          Linking.openURL(
+            `https://api.whatsapp.com/send/?phone=%2B212${order.number.slice(1)}&text=Bonjour%20${order.firstName}%20${order.lastName},%20J'espère%20que%20vous%20allez%20bien.%20Vous%20avez%20passé%20commande%20chez%20cactusia%0A%0A-1%20Coffret%20d'un%20montant%20total%20de%20*${order.price}%20DH*.%20%0A%0AMerci%20bien%20de%20me%20confirmer%20votre%20commande%20afin%20de%20vous%20envoyer%20le%20colis%20dans%20les%20plus%20brefs%20délais.%20%0A%0A${"hiba"}%20de%20cactusia`
+          )
+        }} style={styles.button}>
           <FontAwesome  name="whatsapp" size={24} color="black" />
           <Text>Confirm Order</Text>
           <View style={{marginLeft:"auto"}}>

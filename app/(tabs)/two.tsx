@@ -57,7 +57,7 @@ export default function TabTwoScreen() {
           )
         })
       }
-      <View style={{ height: 100}}></View>
+      <View style={{ height: 100 , backgroundColor: '#fff'}}></View>
     </ScrollView>
   );
 }
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // padding: 12,
     paddingBottom: 10,
-    backgroundColor:"#fefefe"
+    backgroundColor:"white"
   },
 });
