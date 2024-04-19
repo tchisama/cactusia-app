@@ -5,6 +5,7 @@ import { Order } from '@/app/(tabs)/two'
 import { Timestamp } from 'firebase/firestore'
 import { useOrder } from '@/store/order'
 import { Link, router } from 'expo-router'
+import StateSwitcher from './StateSwitcher'
 
 type Props = {
   order:Order
@@ -80,10 +81,12 @@ const OrderItem = ({order}: Props) => {
 
 
   return (
+          
           <TouchableOpacity onPress={()=>{setOrder(order);router.navigate("/order")}}  style={styles.card}>
               <View style={{ display: 'flex',gap: 25, flexDirection: 'row' , justifyContent: 'space-between'}}>
                 <View style={{ flex:1}}>
-                  <Text style={{...styles.state,backgroundColor:selectedState.color+"30",color:selectedState.color,borderColor:selectedState.color}}>{order.status}</Text>
+                  <Text style={{...styles.state,backgroundColor:selectedState.color,color:"white",borderColor:selectedState.color}}>{order.status}</Text>
+                  {/* <StateSwitcher/> */}
                   <Text style={styles.title}>{order.firstName} . {order.lastName}</Text>
                   <Text style={styles.title}>{order.number}</Text>
                 </View>

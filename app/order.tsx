@@ -8,126 +8,27 @@ import SelectDropdown from 'react-native-select-dropdown';
 
 import { CheckIcon, ScrollView, Select } from "native-base";
 import { db } from '@/firebase';
+import StateSwitcher from '@/components/global/StateSwitcher';
 
 
 type Props = {}
-
-const states = [
-  {
-    name: "New",
-    color: "#7cb518",
-    id: 1
-  },
-  {
-    name: "Confirmé",
-    color: "#277DA1",
-    id: 2
-  },
-  {
-    name: "Prêt",
-    color: "#4D908E",
-    id: 3
-  },
-  {
-    name: "En livraison",
-    color: "#985277",
-    id: 4
-  },
-  {
-    name: "Livré",
-    color: "#5c8001",
-    id: 5
-  },
-  {
-    name: "Injoignable",
-    color: "#bb4d00",
-    id: 6
-  },
-  {
-    name: "Reporté",
-    color: "#D69E2E",
-    id: 7
-  },
-  {
-    name: "Annulé",
-    color: "#c32f27",
-    id: 8
-  },
-  {
-    name: "Fake",
-    color: "#333333",
-    id: 9
-  }
-];
 
 
 
 const order = (props: Props) => {
   const {order,setOrder} = useOrder()
-  const [selectedState, setSelectedState] = useState(states[1]); // Default state
-  const [openStateChanger, setOpenStateChanger] = useState(false)
-
-
-  useEffect(() => {
-    if(!order) return
-    setSelectedState(states.find((s) => (s.name as string ).toLowerCase() === order.status.toLocaleLowerCase()) || states[2]);
-  }, [order])
-
-
-
-  const changeState = (state:{color:string,name:string})=>{
-    if(!order) return
-    updateDoc(doc(db,"orders",order.id),{
-      status:state.name
-    })
-  }
 
 
   return (
-    (order && states) &&
+   order  &&
 
     <View style={{
       flex:1,
       padding:15,
       backgroundColor:"white",
     }}>
-      <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-        <View style={{
-          position:"relative",
-        }}>
-          <TouchableOpacity onPress={()=>setOpenStateChanger(true)}>
-            <Text style={{...styles.state,backgroundColor:selectedState.color+"30",color:selectedState.color,borderColor:selectedState.color}}>{selectedState.name}</Text>
-          </TouchableOpacity>
-          {
-            openStateChanger &&
-            <View style={{
-              position:"absolute",
-              top:30,
-              left:0,
-              backgroundColor:"white",
-              zIndex:100,
-              width:140,
-              padding:5,
-              borderWidth:1,
-              borderColor:"#00000022",
-              borderRadius:20
-            }}>
-          {
-            states.map((s,i)=>{
-              return(
-                <TouchableOpacity key={i} onPress={()=>{setSelectedState(s);setOpenStateChanger(false) ; changeState(s)}}>
-                  <Text key={i} style={{...styles.state,backgroundColor:s.color+"30",color:s.color,borderColor:s.color,alignSelf:"stretch", paddingVertical:8}}>{s.name}</Text>
-                </TouchableOpacity>
-              )
-            })
-          }
-        </View>
-          }
-        </View>
-        <Text style={{fontSize:14}}>{formatCreatedAt(order?.createdAt)}</Text>
-      </View>
 
-
+      <StateSwitcher />
 
       <View style={{flexDirection:"row",gap:8,marginVertical:10}}>
         <TouchableOpacity onPress={()=>{

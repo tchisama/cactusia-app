@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { Order } from './two';
+import { Text, View } from '@/components/Themed';
 
 
 
@@ -24,39 +24,30 @@ export default function TabOneScreen() {
   const start = new Date(new Date().setDate(new Date().getDate() - 30));
   // end is today
   const end = new Date();
-  useEffect(() => {
-    const q = query(collection(db,"orders"),where("createdAt",">=",start),where("createdAt","<=",end))
-    getDocs(q).then((querySnapshot)=>{
-      const docs = querySnapshot.docs.map(doc => doc.data() as Order);
-      setMonthsOrders(docs.length)
-      setConfirmedOrders(docs.filter((d)=>d.status === "Livré").length)
-      setConfirmedProfit(docs.filter((d)=>d.status === "Livré").reduce((a,b)=>a + b.price,0))
-    })
-    getDocs(collection(db,"users")).then((querySnapshot)=>{
-      setUsers(querySnapshot.docs.length)
-    })
-  },[])
+  // useEffect(() => {
+  //   const q = query(collection(db,"orders"),where("createdAt",">=",start),where("createdAt","<=",end),limit(30))
+  //   getDocs(q).then((querySnapshot)=>{
+  //     const docs = querySnapshot.docs.map(doc => doc.data() as Order);
+  //     setMonthsOrders(docs.length)
+  //     setConfirmedOrders(docs.filter((d)=>d.status === "Livré").length)
+  //     setConfirmedProfit(docs.filter((d)=>d.status === "Livré").reduce((a,b)=>a + b.price,0))
+  //   })
+  // },[])
   
   return (
     <View style={styles.container}>
-
-      <Text style={styles.title}>month orders</Text>
-      <Text style={styles.OrdersNumber}>{monthsOrders}</Text>
-
-      <View  style={{ display: 'flex' ,backgroundColor: '#fff', flexDirection: 'row' , justifyContent: 'space-between'}}>
-        <View style={{backgroundColor: '#fff'}}>
-          <Text style={styles.title}>delivered orders</Text>
-          <Text style={styles.OrdersNumber2}>{confirmedOrders}</Text>
-        </View>
-        <View style={{backgroundColor: '#fff'}}>
-          <Text style={styles.title}>confirmed profit</Text>
-          <Text style={styles.OrdersNumber2}>{confirmedProfit} Dh</Text>
-        </View>
-      </View>
-        <View style={{backgroundColor: '#fff'}}>
-          <Text style={styles.title}>users</Text>
-          <Text style={styles.OrdersNumber2}>{users} customer</Text>
-        </View>
+      {/* <Text style={styles.title}>month orders</Text> */}
+      {/* <Text style={styles.OrdersNumber}>{monthsOrders}</Text> */}
+      {/* <View  style={{ display: 'flex' ,backgroundColor: '#fff', flexDirection: 'row' , justifyContent: 'space-between'}}> */}
+      {/*   <View style={{backgroundColor: '#fff'}}> */}
+      {/*     <Text style={styles.title}>delivered orders</Text> */}
+      {/*     <Text style={styles.OrdersNumber2}>{confirmedOrders}</Text> */}
+      {/*   </View> */}
+      {/* </View> */}
+      {/*   <View style={{backgroundColor: '#fff'}}> */}
+      {/*     <Text style={styles.title}>users</Text> */}
+      {/*     <Text style={styles.OrdersNumber2}>{users} customer</Text> */}
+      {/*   </View> */}
     </View>
   );
 }

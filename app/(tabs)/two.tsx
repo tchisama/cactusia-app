@@ -7,7 +7,7 @@ import OrderItem from '@/components/global/OrderItem';
 import { useEffect, useState } from 'react';
 import {db} from "@/firebase"
 
-import { Timestamp, collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { Timestamp, collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 
 export type Order = {
   id: string;
@@ -33,7 +33,7 @@ export default function TabTwoScreen() {
   const [orders,setOrders] = useState<Order[]>()
 
   useEffect(()=>{
-    const unsub = onSnapshot(query( collection(db, "orders") , orderBy("createdAt","desc")), (doc) => {
+    const unsub = onSnapshot(query( collection(db, "orders"),limit(30) , orderBy("createdAt","desc")), (doc) => {
         setOrders(
           doc.docs.map(d=>({...d.data() as Order ,id : d.id }))
         )
