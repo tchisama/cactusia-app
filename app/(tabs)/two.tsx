@@ -16,6 +16,7 @@ export type Order = {
   number: string;
   address: string;
   city: string;
+  note: string;
   price: number;
   createdAt: Timestamp;
   cart: CartItem[];
@@ -33,7 +34,7 @@ export default function TabTwoScreen() {
   const [orders,setOrders] = useState<Order[]>()
 
   useEffect(()=>{
-    const unsub = onSnapshot(query( collection(db, "orders"),limit(30) , orderBy("createdAt","desc")), (doc) => {
+    const unsub = onSnapshot(query( collection(db, "orders"),limit(60) , orderBy("createdAt","desc")), (doc) => {
         setOrders(
           doc.docs.map(d=>({...d.data() as Order ,id : d.id }))
         )

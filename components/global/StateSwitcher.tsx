@@ -1,6 +1,6 @@
 import { FlatList, Image, Linking, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Timestamp, doc, updateDoc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -72,6 +72,7 @@ const StateSwitcher = (props: Props) => {
   const [openStateChanger, setOpenStateChanger] = useState(false)
 
 
+
   useEffect(() => {
     if(!order) return
     setSelectedState(states.find((s) => (s.name as string ).toLowerCase() === order.status.toLocaleLowerCase()) || states[2]);
@@ -84,6 +85,22 @@ const StateSwitcher = (props: Props) => {
     updateDoc(doc(db,"orders",order.id),{
       status:state.name
     })
+
+
+    const oldState = selectedState;
+    addDoc(collection(db,"notifications"),{
+      message:`Order of ${[order?.firstName,order?.lastName].join(" ")} , status changed from ${oldState.name} to ${state.name}`,
+      date: Timestamp.now(),
+      type:"order-state-change",
+      from:oldState.name,
+      to:state.name,
+      order:order,
+      user: {
+        name:"cactusia app",
+        email:"",
+      }
+    })
+
   }
   return (
       <View style={{flexDirection:"row",justifyContent:"space-between",zIndex:1000,position:"relative"}}>

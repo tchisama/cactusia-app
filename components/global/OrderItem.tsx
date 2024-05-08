@@ -97,6 +97,10 @@ const OrderItem = ({order}: Props) => {
                 </View>
                   <Ionicons style={{ alignSelf:"center"}} name="chevron-forward" size={15} color="#666" />
               </View>
+      {
+        order?.note &&
+        <Text style={styles.note}><Text style={{fontWeight:"900"}}>NOTE</Text> : {order?.note}</Text>
+      }
           </TouchableOpacity>
   )
 }
@@ -104,6 +108,17 @@ const OrderItem = ({order}: Props) => {
 export default OrderItem
 
 const styles = StyleSheet.create({
+  note: {
+    fontSize: 10,
+    padding:4,
+    marginTop:4,
+    paddingHorizontal: 8,
+    borderLeftWidth:2,
+    borderWidth:1,
+    borderColor:"#3335",
+    backgroundColor:"#f5f02222",
+    borderRadius: 5,
+  },
   title: {
     fontSize: 11,
     fontWeight: 'bold',
